@@ -40,6 +40,9 @@
     <Filter Include="DirextXTK\release_lib">
       <UniqueIdentifier>{73c0d651-01cb-4bd0-940c-19438e5793b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UniDx">
+      <UniqueIdentifier>{b6663ce5-6df3-404c-b2e9-6b3a021941af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -53,15 +56,6 @@
     </ClInclude>
     <ClInclude Include="main.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DxUtil\D3DManager.h">
-      <Filter>DxUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="DxUtil\D3DShader.h">
-      <Filter>DxUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="DxUtil\DxUtilCommon.h">
-      <Filter>DxUtil</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectXTK\include\Audio.h">
       <Filter>DirextXTK\include</Filter>
@@ -147,19 +141,40 @@
     <ClInclude Include="..\DirectXTex\include\scoped.h">
       <Filter>DirectXTex\include</Filter>
     </ClInclude>
-    <ClInclude Include="classTest.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="..\UniDX\UniDx.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDX\Singleton.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDX\Engine.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Shader.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\D3DManager.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Debug.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\UniDxTime.h">
+      <Filter>UniDx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DxUtil\D3DManager.cpp">
-      <Filter>DxUtil</Filter>
+    <ClCompile Include="..\UniDX\Engine.cpp">
+      <Filter>UniDx</Filter>
     </ClCompile>
-    <ClCompile Include="DxUtil\D3DShader.cpp">
-      <Filter>DxUtil</Filter>
+    <ClCompile Include="..\UniDx\Shader.cpp">
+      <Filter>UniDx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UniDx\D3DManager.cpp">
+      <Filter>UniDx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

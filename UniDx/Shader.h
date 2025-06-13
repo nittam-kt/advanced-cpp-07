@@ -11,18 +11,17 @@
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
 
-// このライブラリ共通機能
-#include "DxUtilCommon.h"
-
+namespace UniDx
+{
 
 // ----------------------------------------------------------
-// D3DShaderクラス
+// Shaderクラス
 // ----------------------------------------------------------
-class D3DShader
+class Shader
 {
 public:
 	// シェーダーのパスを指定してコンパイル
-	bool Compile(const wchar_t* filePath);
+	bool Compile(std::wstring filePath);
 
 	// 描画のため、D3DDeviceContextにこのシェーダーをセット
 	void SetToContext();
@@ -33,3 +32,4 @@ private:
 	ComPtr<ID3D11InputLayout>	m_inputLayout = nullptr;// 入力レイアウト
 };
 
+}

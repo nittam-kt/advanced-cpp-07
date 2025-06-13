@@ -3,22 +3,9 @@
 
 #include "framework.h"
 #include "main.h"
-#include "classTest.h"
 
-#include <Keyboard.h>          // DirectXTK
-#include <SimpleMath.h>        // DirectXTK 便利数学ユーティリティ
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-
-// DirectXテクスチャライブラリを使用できるようにする
-#include <DirectXTex.h>
-
-// DirextXフォントライブラリを使用できるようにする
-#include <SpriteFont.h>
-
-#include "DxUtil/D3DManager.h"
-#include "DxUtil/D3DShader.h"
-#include "DxUtil/DxUtilCommon.h"
+#include <UniDx.h>
+#include <Engine.h>
 
 #define MAX_LOADSTRING 100
 
@@ -27,15 +14,8 @@ HINSTANCE hInst;                                // 現在のインターフェ�
 WCHAR szTitle[MAX_LOADSTRING];                  // タイトル バーのテキスト
 WCHAR szWindowClass[MAX_LOADSTRING];            // メイン ウィンドウ クラス名
 
-// キーボード
-std::unique_ptr<Keyboard> g_keyboard;   // DirectXTK Keyboard
 
-// フォント描画用
-std::unique_ptr<SpriteBatch> g_spriteBatch;
-std::unique_ptr<SpriteFont>  g_spriteFont;
-std::wstring text[4];
-
-using namespace std;
+using namespace UniDx;
 
 
 // このコード モジュールに含まれる関数の宣言を転送します:
@@ -54,8 +34,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: ここにコードを挿入してください。
-
     // グローバル文字列を初期化する
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_WEEK01, szWindowClass, MAX_LOADSTRING);
@@ -67,84 +45,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WEEK01));
-
-    MSG msg;
-
-    // メイン メッセージ ループ:
-    while (true)
-    {
-        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-        {
-            //============================================
-            // ウィンドウメッセージ処理
-            //============================================
-            // 終了メッセージがきた
-            if (msg.message == WM_QUIT) {
-                break;
-            }
-            else
-            {
-                TranslateMessage(&msg);
-                DispatchMessage(&msg);
-            }
-        }
-
-        //============================================
-        // ゲームの処理を書く
-        //============================================
-        // 画面を塗りつぶす
-        D3DManager::GetInstance().Clear(0.3f, 0.5f, 0.9f, 1.0f);
-        
-        // 更新処理
-        Update();
-
-        // 描画処理
-        Render();
-
-        // バックバッファの内容を画面に表示
-        D3DManager::GetInstance().Present();
-    }
-
-    return (int) msg.wParam;
+    int result = Engine::instance()->mainLoop();
+    return (int) result;
 }
 
-
-
-//
-//  関数: Update()
-//
-//  目的: ゲームの更新処理を行います。
-//
-void Update()
-{
-    text[0] = std::to_wstring(0);
-    text[1] = std::to_wstring(0);
-    text[2] = std::to_wstring(0);
-    text[3] = std::to_wstring(0);
-}
-
-
-//
-//  関数: Render()
-//
-//  目的: 画面の描画処理を行います。
-//
-void Render()
-{
-    g_spriteBatch->Begin();
-
-    Vector2 drawPos(100, 100);
-    for (auto & str : text)
-    {
-        g_spriteFont->DrawString(g_spriteBatch.get(),
-            str.c_str(),
-            drawPos);
-        drawPos.y += 50;
-    }
-
-    g_spriteBatch->End();
-}
 
 
 //
@@ -195,18 +99,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
-   // Direct3Dインスタンス作成
-   D3DManager::CreateInstance();
-
-   // Direct3D初期化
-   D3DManager::GetInstance().Initialize(hWnd, 1280, 720);
-
-   // キー入力の初期化
-   g_keyboard = std::make_unique<Keyboard>();
-
-   // フォント初期化
-   g_spriteBatch = std::make_unique<SpriteBatch>(D3DManager::GetInstance().GetContext().Get());
-   g_spriteFont = std::make_unique<SpriteFont>(D3DManager::GetInstance().GetDevice().Get(), L"M PLUS 1.spritefont");
+   // UniDxエンジンのインスタンス作成
+   Engine::create();
+   Engine::instance()->Initialize(hWnd);
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
@@ -258,20 +153,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_ACTIVATE:
     case WM_ACTIVATEAPP:
-        Keyboard::ProcessMessage(message, wParam, lParam);
+        Engine::instance()->ProcessKeyboardMessage(message, wParam, lParam);
         break;
     case WM_SYSKEYDOWN:
         if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000)
         {
             // This is where you'd implement the classic ALT+ENTER hotkey for fullscreen toggle
         }
-        Keyboard::ProcessMessage(message, wParam, lParam);
+        Engine::instance()->ProcessKeyboardMessage(message, wParam, lParam);
         break;
 
     case WM_KEYDOWN:
     case WM_KEYUP:
     case WM_SYSKEYUP:
-        Keyboard::ProcessMessage(message, wParam, lParam);
+        Engine::instance()->ProcessKeyboardMessage(message, wParam, lParam);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
