@@ -3,10 +3,6 @@
 
 #include "Engine.h"
 
-namespace
-{
-#include <cstdlib>
-}
 #include <string>
 #include <chrono>
 
@@ -45,17 +41,17 @@ namespace UniDx
     void Engine::Initialize(HWND hWnd)
     {
         // Direct3Dインスタンス作成
-        D3DManager::CreateInstance();
+        D3DManager::create();
 
         // Direct3D初期化
-        D3DManager::GetInstance().Initialize(hWnd, 1280, 720);
+        D3DManager::instance->Initialize(hWnd, 1280, 720);
 
         // キー入力の初期化
         g_keyboard = std::make_unique<Keyboard>();
 
         // フォント初期化
-        g_spriteBatch = std::make_unique<SpriteBatch>(D3DManager::GetInstance().GetContext().Get());
-        g_spriteFont = std::make_unique<SpriteFont>(D3DManager::GetInstance().GetDevice().Get(), L"Resource/M PLUS 1.spritefont");
+        g_spriteBatch = std::make_unique<SpriteBatch>(D3DManager::instance->GetContext().Get());
+        g_spriteFont = std::make_unique<SpriteFont>(D3DManager::instance->GetDevice().Get(), L"Resource/M PLUS 1.spritefont");
     }
 
 
@@ -63,10 +59,7 @@ namespace UniDx
     {
         MSG msg;
 
-        Time::frameCount = 0;
-        Time::time = 0.0f;
-        Time::unscaledDeltaTime = 0.0f;
-        double deltaTime = 0.0f;
+        Time::Start();
         double restFixedUpdateTime = 0.0f;
 
         // メイン メッセージ ループ:
@@ -95,12 +88,12 @@ namespace UniDx
             // ゲームの処理を書く
             //============================================
             // 画面を塗りつぶす
-            D3DManager::GetInstance().Clear(0.3f, 0.5f, 0.9f, 1.0f);
+            D3DManager::instance->Clear(0.3f, 0.5f, 0.9f, 1.0f);
+
+            Time::SetDeltaTimeFixed();
 
             while (restFixedUpdateTime > Time::fixedDeltaTime)
             {
-                Time::deltaTime = Time::fixedDeltaTime;
-
                 // 固定時間更新更新
                 FixedUpdate();
 
@@ -110,7 +103,7 @@ namespace UniDx
                 restFixedUpdateTime -= Time::fixedDeltaTime;
             }
 
-            Time::deltaTime = float(deltaTime);
+            Time::SetDeltaTimeFrame();
 
             // 入力更新
             Input();
@@ -125,16 +118,13 @@ namespace UniDx
             Render();
 
             // バックバッファの内容を画面に表示
-            D3DManager::GetInstance().Present();
+            D3DManager::instance->Present();
 
             // 時間計算
-            deltaTime = std::chrono::duration<double>(clock::now() - start).count();
+            double deltaTime = std::chrono::duration<double>(clock::now() - start).count();
             restFixedUpdateTime += deltaTime;
 
-            Time::time += float(deltaTime * Time::timeScale);
-            Time::unscaledDeltaTime = float(deltaTime);
-            Time::unscaledTime += float(deltaTime);
-            Time::frameCount++;
+            Time::UpdateFrame(deltaTime);
         }
 
         // 終了処理

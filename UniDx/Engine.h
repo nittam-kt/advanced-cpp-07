@@ -3,7 +3,6 @@
 #include <windows.h>
 #include <Keyboard.h>
 
-#include "UniDx.h"
 #include "Singleton.h"
 
 namespace UniDx

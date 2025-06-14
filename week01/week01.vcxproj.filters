@@ -162,6 +162,21 @@
     <ClInclude Include="..\UniDx\UniDxTime.h">
       <Filter>UniDx</Filter>
     </ClInclude>
+    <ClInclude Include="..\UniDx\GameObject.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Object.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Component.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Property.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Transform.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -174,6 +189,9 @@
       <Filter>UniDx</Filter>
     </ClCompile>
     <ClCompile Include="..\UniDx\D3DManager.cpp">
+      <Filter>UniDx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UniDx\Component.cpp">
       <Filter>UniDx</Filter>
     </ClCompile>
   </ItemGroup>

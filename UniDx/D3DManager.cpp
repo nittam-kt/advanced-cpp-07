@@ -2,6 +2,8 @@
 
 #include <windows.h>
 
+namespace UniDx{
+
 D3DManager* D3DManager::s_instance = nullptr;
 
 // Direct3Dを初期化し、使用できるようにする
@@ -119,3 +121,5 @@ void D3DManager::Clear(float r, float g, float b, float a)
 	m_context->ClearRenderTargetView(m_renderTarget.Get(), color);
 	m_context->OMSetRenderTargets(1, m_renderTarget.GetAddressOf(), nullptr); // 深度ステンシル未使用
 }
+
+} // UniDx

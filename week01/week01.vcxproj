@@ -165,10 +165,15 @@
     <ClInclude Include="..\DirectXTK\include\VertexTypes.h" />
     <ClInclude Include="..\DirectXTK\include\WICTextureLoader.h" />
     <ClInclude Include="..\DirectXTK\include\XboxDDSTextureLoader.h" />
+    <ClInclude Include="..\UniDx\Component.h" />
     <ClInclude Include="..\UniDx\D3DManager.h" />
     <ClInclude Include="..\UniDx\Debug.h" />
     <ClInclude Include="..\UniDX\Engine.h" />
+    <ClInclude Include="..\UniDx\GameObject.h" />
+    <ClInclude Include="..\UniDx\Object.h" />
+    <ClInclude Include="..\UniDx\Property.h" />
     <ClInclude Include="..\UniDx\Shader.h" />
+    <ClInclude Include="..\UniDx\Transform.h" />
     <ClInclude Include="..\UniDx\UniDxTime.h" />
     <ClInclude Include="..\UniDX\UniDx.h" />
     <ClInclude Include="..\UniDX\Singleton.h" />
@@ -178,6 +183,7 @@
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\UniDx\Component.cpp" />
     <ClCompile Include="..\UniDx\D3DManager.cpp" />
     <ClCompile Include="..\UniDX\Engine.cpp" />
     <ClCompile Include="..\UniDx\Shader.cpp" />

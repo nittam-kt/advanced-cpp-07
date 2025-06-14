@@ -45,7 +45,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    int result = Engine::instance()->mainLoop();
+    int result = Engine::instance->mainLoop();
     return (int) result;
 }
 
@@ -101,7 +101,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    // UniDxエンジンのインスタンス作成
    Engine::create();
-   Engine::instance()->Initialize(hWnd);
+   Engine::instance->Initialize(hWnd);
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
@@ -153,20 +153,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_ACTIVATE:
     case WM_ACTIVATEAPP:
-        Engine::instance()->ProcessKeyboardMessage(message, wParam, lParam);
+        Engine::instance->ProcessKeyboardMessage(message, wParam, lParam);
         break;
     case WM_SYSKEYDOWN:
         if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000)
         {
             // This is where you'd implement the classic ALT+ENTER hotkey for fullscreen toggle
         }
-        Engine::instance()->ProcessKeyboardMessage(message, wParam, lParam);
+        Engine::instance->ProcessKeyboardMessage(message, wParam, lParam);
         break;
 
     case WM_KEYDOWN:
     case WM_KEYUP:
     case WM_SYSKEYUP:
-        Engine::instance()->ProcessKeyboardMessage(message, wParam, lParam);
+        Engine::instance->ProcessKeyboardMessage(message, wParam, lParam);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
