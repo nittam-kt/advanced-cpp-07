@@ -33,7 +33,6 @@ void Material::initialize(std::wstring shaderPath)
 // -----------------------------------------------------------------------------
 void Renderer::OnEnable()
 {
-    UniDx::Debug::Log(L"OnEnable");
     // 行列用の定数バッファ生成
     D3D11_BUFFER_DESC desc{};
     desc.ByteWidth = sizeof(VSConstantBuffer0);

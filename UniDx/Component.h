@@ -3,7 +3,6 @@
 
 #include "Object.h"
 #include "Property.h"
-#include "Debug.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -32,7 +31,6 @@ public:
         {
             Awake();
             isCalledAwake = true;
-            Debug::Log(L"checkAwake-OnEnable");
 
             OnEnable();
         }

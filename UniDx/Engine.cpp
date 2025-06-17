@@ -364,7 +364,6 @@ void Engine::render(GameObject* object, const Camera& camera)
         auto renderer = dynamic_cast<Renderer*>(it.get());
         if (renderer != nullptr && renderer->enabled)
         {
-            UniDx::Debug::Log(object->name.get().c_str());
             renderer->Render(camera);
         }
     }

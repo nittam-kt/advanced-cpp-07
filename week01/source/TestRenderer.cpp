@@ -12,8 +12,6 @@ void TestRenderer::Render(const UniDx::Camera& camera)
     // 現在のTransformとカメラの情報をシェーダーのConstantBufferに転送
     Renderer::UpdatePositionCameraCBuffer(camera);
 
-    UniDx::Debug::Log(L"Render");
-
     // 描画処理
     // 三角形の描画
     {
@@ -60,7 +58,6 @@ void TestRenderer::Render(const UniDx::Camera& camera)
         // プロミティブ・トポロジーをセット
         D3DManager::instance->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-        UniDx::Debug::Log(__LINE__);
         //-----------------------------
         // シェーダーをセット
         //-----------------------------
@@ -71,7 +68,6 @@ void TestRenderer::Render(const UniDx::Camera& camera)
         //-----------------------------
         // デバイスコンテキスト、上記のセットした内容で描画してください、とお願いする
         D3DManager::instance->GetContext()->Draw(4, 0);
-        UniDx::Debug::Log(__LINE__);
     }
 }
 
