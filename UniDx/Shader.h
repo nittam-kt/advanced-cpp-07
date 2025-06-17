@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
-// C++‚ÌSTL
+// C++ã®STL
 #include <string>
 
-// Direct3D‚ÌŒ^EƒNƒ‰ƒXEŠÖ”‚È‚Ç
+// Direct3Dã®å‹ãƒ»ã‚¯ãƒ©ã‚¹ãƒ»é–¢æ•°ãªã©
 #include <d3d11.h>
 #include <d3dcompiler.h>
 
@@ -11,25 +11,31 @@
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
 
+#include "Object.h"
+
 namespace UniDx
 {
 
 // ----------------------------------------------------------
-// ShaderƒNƒ‰ƒX
+// Shaderã‚¯ãƒ©ã‚¹
 // ----------------------------------------------------------
-class Shader
+class Shader : public Object
 {
 public:
-	// ƒVƒF[ƒ_[‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒpƒCƒ‹
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ‘ã‚¹ã‚’æŒ‡å®šã—ã¦ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
 	bool Compile(std::wstring filePath);
 
-	// •`‰æ‚Ì‚½‚ßAD3DDeviceContext‚É‚±‚ÌƒVƒF[ƒ_[‚ğƒZƒbƒg
-	void SetToContext();
+	// æç”»ã®ãŸã‚ã€D3DDeviceContextã«ã“ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
+	void SetToContext() const;
+
+protected:
+	virtual const std::wstring& getName() override { return fileName; }
+	std::wstring fileName;
 
 private:
-	ComPtr<ID3D11VertexShader>	m_vertex = nullptr;	// ’¸“_ƒVƒF[ƒ_[
-	ComPtr<ID3D11PixelShader>	m_pixel = nullptr;	// ƒsƒNƒZƒ‹ƒVƒF[ƒ_[
-	ComPtr<ID3D11InputLayout>	m_inputLayout = nullptr;// “ü—ÍƒŒƒCƒAƒEƒg
+	ComPtr<ID3D11VertexShader>	m_vertex = nullptr;	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+	ComPtr<ID3D11PixelShader>	m_pixel = nullptr;	// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+	ComPtr<ID3D11InputLayout>	m_inputLayout = nullptr;// å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 };
 
 }

@@ -22,6 +22,11 @@ namespace Debug
         OutputDebugStringW(value);
         OutputDebugStringW(L"\n");
     }
+    inline void Log(const char* value)
+    {
+        OutputDebugStringA(value);
+        OutputDebugStringA("\n");
+    }
 }
 
 }

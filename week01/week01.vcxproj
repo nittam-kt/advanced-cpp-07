@@ -165,6 +165,8 @@
     <ClInclude Include="..\DirectXTK\include\VertexTypes.h" />
     <ClInclude Include="..\DirectXTK\include\WICTextureLoader.h" />
     <ClInclude Include="..\DirectXTK\include\XboxDDSTextureLoader.h" />
+    <ClInclude Include="..\UniDx\Behaviour.h" />
+    <ClInclude Include="..\UniDx\Camera.h" />
     <ClInclude Include="..\UniDx\Component.h" />
     <ClInclude Include="..\UniDx\D3DManager.h" />
     <ClInclude Include="..\UniDx\Debug.h" />
@@ -172,22 +174,32 @@
     <ClInclude Include="..\UniDx\GameObject.h" />
     <ClInclude Include="..\UniDx\Object.h" />
     <ClInclude Include="..\UniDx\Property.h" />
+    <ClInclude Include="..\UniDx\Renderer.h" />
+    <ClInclude Include="..\UniDx\Scene.h" />
+    <ClInclude Include="..\UniDx\SceneManager.h" />
     <ClInclude Include="..\UniDx\Shader.h" />
     <ClInclude Include="..\UniDx\Transform.h" />
+    <ClInclude Include="..\UniDx\UniDxDefine.h" />
     <ClInclude Include="..\UniDx\UniDxTime.h" />
     <ClInclude Include="..\UniDX\UniDx.h" />
     <ClInclude Include="..\UniDX\Singleton.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="source\main.h" />
+    <ClInclude Include="source\TestRenderer.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\UniDx\Camera.cpp" />
     <ClCompile Include="..\UniDx\Component.cpp" />
     <ClCompile Include="..\UniDx\D3DManager.cpp" />
     <ClCompile Include="..\UniDX\Engine.cpp" />
+    <ClCompile Include="..\UniDx\Renderer.cpp" />
     <ClCompile Include="..\UniDx\Shader.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\UniDx\Transform.cpp" />
+    <ClCompile Include="source\CreateDefaultScene.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\TestRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="week01.rc" />
@@ -197,10 +209,12 @@
     <Image Include="week01.ico" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="DxUtil\SimplePositionShader.hlsl">
+    <FxCompile Include="..\UniDx\SimplePositionShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
-    <FxCompile Include="DxUtil\SpriteShader.hlsl">
+    <FxCompile Include="..\UniDx\SpriteShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>

@@ -8,7 +8,7 @@ namespace UniDx
 
 Transform::~Transform() 
 {
-    for (auto child : children)
+    for (auto& child : children)
     {
         if (child) child->transform->parent = nullptr;
     }
@@ -16,7 +16,7 @@ Transform::~Transform()
 
 
 // 親の変更
-std::shared_ptr<GameObject> Transform::SetParent(Transform * newParent)
+GameObject* Transform::SetParent(Transform * newParent)
 {
     // 親のTransformから自分を外す
     if (parent == nullptr)
@@ -27,15 +27,17 @@ std::shared_ptr<GameObject> Transform::SetParent(Transform * newParent)
     }
     auto& siblings = parent->children;
 
-    // 以前の親からGameObjectのスマートポインタをコピー
-    auto gameObject_ptr = *std::find_if(
+    // 以前の親からGameObjectのスマートポインタを所有権ごと移動
+    auto it = std::find_if(
         siblings.begin(), siblings.end(),
-        [this](const std::shared_ptr<GameObject>& ptr) { return ptr->transform == this; });
+        [this](const GameObjectPtr& ptr) { return ptr->transform == this; });
+    assert(it != siblings.end());
 
+    GameObject* gameObject_ptr = it->get();
     assert(gameObject_ptr != nullptr);
 
-    // 以前の親から自分を持つGameObjectを削除
-    std::remove_if(siblings.begin(), siblings.end(), [this](const std::shared_ptr<GameObject>& ptr) { return ptr->transform == this; });
+    // 元の親から削除
+    siblings.erase(it);
 
     // 新しい親を設定
     parent = newParent;
@@ -43,7 +45,7 @@ std::shared_ptr<GameObject> Transform::SetParent(Transform * newParent)
     if (parent)
     {
         // 新しい親に自分を持つGameObjectを追加
-        parent->children.push_back(gameObject_ptr);
+        parent->children.push_back(std::move(*it));
     }
     m_dirty = true;
 
@@ -51,7 +53,7 @@ std::shared_ptr<GameObject> Transform::SetParent(Transform * newParent)
 }
 
 
-void Transform::SetParent(std::shared_ptr<GameObject> gameObjectPtr, Transform* newParent)
+void Transform::SetParent(GameObjectPtr gameObjectPtr, Transform* newParent)
 {
     // 親のTransformから自分を外す
     if (gameObjectPtr->transform->parent != nullptr)
@@ -63,16 +65,26 @@ void Transform::SetParent(std::shared_ptr<GameObject> gameObjectPtr, Transform* 
 
     // 新しい親を設定
     gameObjectPtr->transform->parent = newParent;
-
+    gameObjectPtr->transform->m_dirty = true;
     if (newParent)
     {
         // 新しい親に自分を持つGameObjectを追加
-        newParent->children.push_back(gameObjectPtr);
+        newParent->children.push_back(std::move(gameObjectPtr));
     }
-    gameObjectPtr->transform->m_dirty = true;
 }
 
 
+// 子を取得
+Transform* Transform::GetChild(size_t index) const
+{
+    if (index < children.size() && children[index]) {
+        return children[index]->transform;
+    }
+    return nullptr;
+}
+
+
+// 行列を更新
 void Transform::UpdateMatrices() const
 {
     if (m_dirty)

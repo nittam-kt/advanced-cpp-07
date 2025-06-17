@@ -3,11 +3,13 @@
 #include <memory>
 #include <SimpleMath.h>
 
+#include "UniDxDefine.h"
 #include "Component.h"
 
 using namespace DirectX::SimpleMath;
 
 namespace UniDx {
+
 
 // --------------------
 // Transformクラス
@@ -15,32 +17,48 @@ namespace UniDx {
 class Transform : public Component
 {
 public:
+    typedef std::unique_ptr<GameObject> GameObjectPtr;
+
     // ローカルの姿勢
     Property<Vector3> localPosition;
     Property<Vector3> localRotation;
     Property<Vector3> localScale;
-
-    // ダーティフラグと行列
-    mutable bool m_dirty = true;
-    mutable Matrix m_localMatrix = Matrix::Identity;
-    mutable Matrix m_worldMatrix = Matrix::Identity;
 
     // グローバルposition
     Property<Vector3> position;
 
     Transform* parent = nullptr;
 
-    // 子GameObject
-    // トップ以外のGameObjectはTransformによって保持される
-    std::vector<std::shared_ptr<GameObject>> children;
+    const GameObjectContainer& getChildGameObjects() { return children; }
 
-    // バッキングフィールド
-private:
-    Vector3 _localPosition{ 0,0,0 };
-    Vector3 _localRotation{ 0,0,0 };
-    Vector3 _localScale{ 1,1,1 };
+    // 親の変更
+    GameObject* SetParent(Transform* newParent);
 
-public:
+    // 親のいないTransformを持つGameObjectに親を設定
+    static void SetParent(GameObjectPtr gameObjectPtr, Transform* newParent);
+
+    // 子の数を取得
+    size_t getChildCount() const { return children.size(); }
+
+    // 子を取得
+    Transform* GetChild(size_t index) const;
+
+    // ローカル行列
+    const Matrix& GetLocalMatrix() const {
+        if (m_dirty) {
+            m_localMatrix = Matrix::CreateScale(_localScale)
+                * Matrix::CreateFromYawPitchRoll(_localRotation.y, _localRotation.x, _localRotation.z)
+                * Matrix::CreateTranslation(_localPosition);
+        }
+        return m_localMatrix;
+    }
+
+    // ワールド行列
+    const Matrix& GetWorldMatrix() const {
+        UpdateMatrices();
+        return m_worldMatrix;
+    }
+
     Transform()
         : localPosition(
             // getter
@@ -79,38 +97,20 @@ public:
 
     virtual ~Transform();
 
-    // 親の変更
-    std::shared_ptr<GameObject> SetParent(Transform* newParent);
-
-    // 親のいないTransformを持つGameObjectに親を設定
-    static void SetParent(std::shared_ptr<GameObject> gameObjectPtr, Transform* newParent);
-
-    size_t ChildCount() const { return children.size(); }
-
-    Transform* GetChildTransform(size_t index) const {
-        if (index < children.size() && children[index]) {
-            return children[index]->transform;
-        }
-        return nullptr;
-    }
-
-    // ローカル行列
-    const Matrix& GetLocalMatrix() const {
-        if (m_dirty) {
-            m_localMatrix = Matrix::CreateScale(_localScale)
-                * Matrix::CreateFromYawPitchRoll(_localRotation.y, _localRotation.x, _localRotation.z)
-                * Matrix::CreateTranslation(_localPosition);
-        }
-        return m_localMatrix;
-    }
-
-    // ワールド行列
-    const Matrix& GetWorldMatrix() const {
-        UpdateMatrices();
-        return m_worldMatrix;
-    }
-
 private:
+    // ダーティフラグと行列
+    mutable bool m_dirty = true;
+    mutable Matrix m_localMatrix = Matrix::Identity;
+    mutable Matrix m_worldMatrix = Matrix::Identity;
+
+    Vector3 _localPosition{ 0,0,0 };
+    Vector3 _localRotation{ 0,0,0 };
+    Vector3 _localScale{ 1,1,1 };
+
+    // 子GameObject
+    // トップ以外のGameObjectはTransformによって保持される
+    GameObjectContainer children;
+
     // 行列の更新
     void UpdateMatrices() const;
 };

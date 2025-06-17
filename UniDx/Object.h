@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <string>
 
+#include "UniDxDefine.h"
 #include "Property.h"
 
 namespace UniDx {
@@ -11,6 +12,8 @@ namespace UniDx {
 class Object
 {
 public:
+    virtual ~Object() {}
+
     ReadOnlyProperty<const std::wstring&> name;
 
     Object() : name([this]() { return getName(); }) {}

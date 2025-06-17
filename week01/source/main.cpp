@@ -1,7 +1,7 @@
 ﻿// week01.cpp : アプリケーションのエントリ ポイントを定義します。
 //
 
-#include "framework.h"
+#include "../framework.h"
 #include "main.h"
 
 #include <UniDx.h>
@@ -45,7 +45,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    int result = Engine::instance->mainLoop();
+    int result = Engine::instance->PlayerLoop();
     return (int) result;
 }
 

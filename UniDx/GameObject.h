@@ -26,11 +26,29 @@ class GameObject : public Object
 public:
     Transform* transform;
 
-    std::vector<std::unique_ptr<Component>> components;
+    const std::vector<std::unique_ptr<Component>>& GetComponents() { return components; }
 
-    GameObject(const std::wstring& name = L"GameObject") : name_(name) {
+    GameObject(const std::wstring& name = L"GameObject") : name_(name)
+    {
         // デフォルトでTransformを追加
         transform = AddComponent<Transform>();
+    }
+
+    // 可変長引数でunique_ptr<Component>を受け取るコンストラクタ
+    template<typename... ComponentPtrs>
+    GameObject(const std::wstring& name, ComponentPtrs&&... components) : name_(name)
+    {
+        transform = AddComponent<Transform>();
+        AddComponent(std::forward<ComponentPtrs>(components)...);
+    }
+
+    void AddComponent() {} // ヘルパー関数でパック展開
+
+    template<typename First, typename... Rest>
+    void AddComponent(First&& first, Rest&&... rest)
+    {
+        first->gameObject = this;
+        components.push_back(std::move(first));
     }
 
     template<typename T, typename... Args>
@@ -55,6 +73,7 @@ public:
 
 protected:
     std::wstring name_;
+    std::vector<std::unique_ptr<Component>> components;
 
     const std::wstring& getName() override { return name_; }
 };

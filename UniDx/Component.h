@@ -3,6 +3,7 @@
 
 #include "Object.h"
 #include "Property.h"
+#include "Debug.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -19,41 +20,61 @@ class GameObject;
 class Component : public Object
 {
 public:
+    Property<bool> enabled;
+    ReadOnlyProperty<Transform*> transform;
+
     GameObject* gameObject = nullptr;
-    virtual ~Component() = default;
+
+    // 有効フラグが立っているかどうか確認して Awake() 呼び出し
+    void checkAwake()
+    {
+        if (_enabled && !isCalledAwake)
+        {
+            Awake();
+            isCalledAwake = true;
+            Debug::Log(L"checkAwake-OnEnable");
+
+            OnEnable();
+        }
+    }
+
+    // 有効フラグが立っているかどうか確認して Start() 呼び出し
+    void checkStart()
+    {
+        if (_enabled && isCalledAwake && !isCalledStart)
+        {
+            Start();
+            isCalledStart = true;
+        }
+    }
+
+    virtual ~Component()
+    {
+        if (_enabled)
+        {
+            enabled = false;
+        }
+        if (isCalledAwake)
+        {
+            OnDestroy();
+        }
+    }
 
 protected:
+    virtual void Awake() {}
+    virtual void Start() {}
+    virtual void OnEnable() {}
+    virtual void OnDisable() {}
+    virtual void OnDestroy() {}
+
+    bool isCalledAwake;
+    bool isCalledStart;
+    bool _enabled;
+
+    Component();
+
     const std::wstring& getName() override;
 };
 
-
-// --------------------
-// Behaviour基底クラス
-// --------------------
-class Behaviour : public Component
-{
-public:
-    virtual void Update() {}
-    virtual ~Behaviour() = default;
-};
-
-
-// --------------------
-// Cameraクラス
-// --------------------
-class Camera : public Behaviour
-{
-public:
-    float fov = 60.0f;
-    float nearClip = 0.1f;
-    float farClip = 1000.0f;
-
-    Matrix GetViewMatrix() const;
-
-    Matrix GetProjectionMatrix(float aspect) const {
-        using namespace DirectX;
-        return XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(fov), aspect, nearClip, farClip);
-    }
-};
 
 } // namespace UniDx

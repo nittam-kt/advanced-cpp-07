@@ -1,5 +1,6 @@
 #include "Shader.h"
 
+#include <filesystem>
 #include <d3d11.h>
 
 #include "D3DManager.h"
@@ -17,6 +18,7 @@ bool Shader::Compile(std::wstring filePath)
 	if (FAILED(D3DCompileFromFile(filePath.c_str(), nullptr, nullptr, "VS", "vs_5_0", 0, 0, &compiledVS, nullptr)))
 	{
 		Debug::Log(L"頂点シェーダーのコンパイルエラー");
+		abort();
 		return false;
 	}
 	// ピクセルシェーダーを読み込み＆コンパイル
@@ -52,10 +54,13 @@ bool Shader::Compile(std::wstring filePath)
 		return false;
 	}
 
+	std::filesystem::path path(filePath);
+	fileName = path.filename();
+
 	return true;
 }
 
-void Shader::SetToContext()
+void Shader::SetToContext() const
 {
 	D3DManager::instance->GetContext()->VSSetShader(m_vertex.Get(), 0, 0);
 	D3DManager::instance->GetContext()->PSSetShader(m_pixel.Get(), 0, 0);

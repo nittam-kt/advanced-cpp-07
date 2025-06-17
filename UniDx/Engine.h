@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 #include <windows.h>
 #include <Keyboard.h>
@@ -8,12 +8,15 @@
 namespace UniDx
 {
 
-// ÉGÉìÉWÉìÇÃÉÅÉCÉì
+class GameObject;
+class Camera;
+
+// „Ç®„É≥„Ç∏„É≥„ÅÆ„É°„Ç§„É≥
 class Engine : public Singleton<Engine>
 {
 public:
     virtual void Initialize(HWND hWnd);
-    virtual int mainLoop();
+    virtual int PlayerLoop();
 
     void ProcessKeyboardMessage(UINT message, WPARAM wParam, LPARAM lParam)
     {
@@ -21,13 +24,23 @@ public:
     }
 
 protected:
-    virtual void FixedUpdate();
-    virtual void Physics();
-    virtual void Input();
-    virtual void Update();
-    virtual void LateUpdate();
-    virtual void Render();
-    virtual void Finalize();
+    virtual void fixedUpdate();
+    virtual void physics();
+    virtual void input();
+    virtual void update();
+    virtual void lateUpdate();
+    virtual void render();
+    virtual void finalize();
+
+    void awake(GameObject* object);
+    void fixedUpdate(GameObject* object);
+    void checkStart(GameObject* object);
+    void update(GameObject* object);
+    void lateUpdate(GameObject* object);
+    void render(GameObject* object, const Camera& camera);
+
+private:
+    void createScene();
 };
 
 }

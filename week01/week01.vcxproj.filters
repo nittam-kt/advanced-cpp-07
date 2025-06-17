@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="DxUtil">
-      <UniqueIdentifier>{a0567210-7052-4f4a-b07e-a0cd5742888c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DirextXTK">
       <UniqueIdentifier>{806eea5d-af2c-4c92-8542-f663696d746e}</UniqueIdentifier>
     </Filter>
@@ -52,9 +49,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="main.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectXTK\include\Audio.h">
@@ -177,11 +171,32 @@
     <ClInclude Include="..\UniDx\Transform.h">
       <Filter>UniDx</Filter>
     </ClInclude>
+    <ClInclude Include="..\UniDx\SceneManager.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Scene.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\UniDxDefine.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="source\main.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Behaviour.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Camera.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Renderer.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TestRenderer.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="..\UniDX\Engine.cpp">
       <Filter>UniDx</Filter>
     </ClCompile>
@@ -192,6 +207,24 @@
       <Filter>UniDx</Filter>
     </ClCompile>
     <ClCompile Include="..\UniDx\Component.cpp">
+      <Filter>UniDx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UniDx\Transform.cpp">
+      <Filter>UniDx</Filter>
+    </ClCompile>
+    <ClCompile Include="source\main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CreateDefaultScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UniDx\Camera.cpp">
+      <Filter>UniDx</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TestRenderer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UniDx\Renderer.cpp">
       <Filter>UniDx</Filter>
     </ClCompile>
   </ItemGroup>
@@ -209,11 +242,11 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="DxUtil\SpriteShader.hlsl">
-      <Filter>DxUtil</Filter>
+    <FxCompile Include="..\UniDx\SimplePositionShader.hlsl">
+      <Filter>UniDx</Filter>
     </FxCompile>
-    <FxCompile Include="DxUtil\SimplePositionShader.hlsl">
-      <Filter>DxUtil</Filter>
+    <FxCompile Include="..\UniDx\SpriteShader.hlsl">
+      <Filter>UniDx</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
