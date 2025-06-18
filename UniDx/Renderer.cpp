@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "D3DManager.h"
+#include "Texture.h"
+#include "Camera.h"
 #include "Debug.h"
 
 namespace UniDx{
@@ -20,11 +22,37 @@ struct VSConstantBuffer0
 
 
 // -----------------------------------------------------------------------------
-// マテリアルの初期化
+// コンストラクタ
 // -----------------------------------------------------------------------------
-void Material::initialize(std::wstring shaderPath)
+Material::Material() :
+    mainTexture(
+        [this]() { return textures.size() > 0 ? textures.front().get() : nullptr; }
+    )
+
 {
-    shader.Compile(shaderPath);
+
+}
+
+
+// -----------------------------------------------------------------------------
+// レンダリング用にデバイスへ設定
+// -----------------------------------------------------------------------------
+void Material::setForRender() const
+{
+    shader.SetToContext();
+    for (auto& tex : textures)
+    {
+        tex->setForRender();
+    }
+}
+
+
+// -----------------------------------------------------------------------------
+// テクスチャ追加
+// -----------------------------------------------------------------------------
+void Material::addTexture(std::unique_ptr<Texture> tex)
+{
+    textures.push_back(std::move(tex));
 }
 
 
@@ -51,8 +79,10 @@ void Renderer::UpdatePositionCameraCBuffer(const UniDx::Camera& camera) const
     // ─ ワールド行列を位置に合わせて作成
     VSConstantBuffer0 cb{};
     cb.world = Matrix::CreateTranslation(transform->position);
-    cb.view = Matrix::Identity;   // 今回は固定カメラ
-    cb.projection = Matrix::Identity;   // 必要なら透視／正射影を別途セット
+//    cb.view = Matrix::Identity;   // 今回は固定カメラ
+    cb.view = camera.GetViewMatrix();
+//    cb.projection = Matrix::Identity;   // 必要なら透視／正射影を別途セット
+    cb.projection = camera.GetProjectionMatrix(16.0f/9.0f);
 
     // 定数バッファ更新
     D3DManager::instance->GetContext()->UpdateSubresource(constantBuffer0.Get(), 0, nullptr, &cb, 0, 0);
@@ -66,7 +96,7 @@ void Renderer::SetShaderForRender() const
 {
     for(auto& material : materials)
     {
-        material.setForRender();
+        material->setForRender();
 
         ID3D11Buffer* cbs[1] = { constantBuffer0.Get() };
         D3DManager::instance->GetContext()->VSSetConstantBuffers(0, 1, cbs);

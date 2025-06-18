@@ -19,7 +19,7 @@ public:
     Object() : name([this]() { return getName(); }) {}
 
 protected:
-    virtual const std::wstring& getName() = 0;
+    virtual const std::wstring& getName() const = 0;
 };
 
 } // namespace UniDx

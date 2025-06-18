@@ -5,6 +5,7 @@
 
 #include "UniDxDefine.h"
 #include "Component.h"
+#include "GameObject.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -21,7 +22,7 @@ public:
 
     // ローカルの姿勢
     Property<Vector3> localPosition;
-    Property<Vector3> localRotation;
+    Property<Quaternion> localRotation;
     Property<Vector3> localScale;
 
     // グローバルposition
@@ -47,7 +48,7 @@ public:
     const Matrix& GetLocalMatrix() const {
         if (m_dirty) {
             m_localMatrix = Matrix::CreateScale(_localScale)
-                * Matrix::CreateFromYawPitchRoll(_localRotation.y, _localRotation.x, _localRotation.z)
+                * Matrix::CreateFromQuaternion(_localRotation)
                 * Matrix::CreateTranslation(_localPosition);
         }
         return m_localMatrix;
@@ -68,7 +69,7 @@ public:
         ),
         localRotation(
             [this]() { return _localRotation; },
-            [this](const Vector3& v) { _localRotation = v; m_dirty = true; }
+            [this](const Quaternion& q) { _localRotation = q; m_dirty = true; }
         ),
         localScale(
             [this]() { return _localScale; },
@@ -104,7 +105,7 @@ private:
     mutable Matrix m_worldMatrix = Matrix::Identity;
 
     Vector3 _localPosition{ 0,0,0 };
-    Vector3 _localRotation{ 0,0,0 };
+    Quaternion _localRotation = Quaternion::Identity;
     Vector3 _localScale{ 1,1,1 };
 
     // 子GameObject

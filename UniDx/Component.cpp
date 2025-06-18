@@ -32,7 +32,7 @@ Component::Component() :
 
 }
     
-const std::wstring& Component::getName()
+const std::wstring& Component::getName() const
 {
     return gameObject->name;
 }

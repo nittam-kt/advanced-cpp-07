@@ -26,10 +26,8 @@ using namespace DirectX::SimpleMath;
 #include "Camera.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include "Input.h"
 #include "Debug.h"
-
-// キーボード
-std::unique_ptr<Keyboard> g_keyboard;   // DirectXTK Keyboard
 
 // フォント描画用
 std::unique_ptr<SpriteBatch> g_spriteBatch;
@@ -56,8 +54,8 @@ void Engine::Initialize(HWND hWnd)
     // シーンマネージャのインスタンス作成
     SceneManager::create();
 
-    // キー入力の初期化
-    g_keyboard = std::make_unique<Keyboard>();
+    // 入力の初期化
+    Input::initialize();
 
     // フォント初期化
     g_spriteBatch = std::make_unique<SpriteBatch>(D3DManager::instance->GetContext().Get());
@@ -180,7 +178,7 @@ void Engine::physics()
 // 入力更新
 void Engine::input()
 {
-
+    Input::update();
 }
 
 
@@ -278,7 +276,7 @@ void Engine::awake(GameObject* object)
 
 void Engine::fixedUpdate(GameObject* object)
 {
-    // 自身のコンポーネントの中でFixedUpdateを呼び出していないものを呼ぶ
+    // FixedUpdateを呼ぶ
     for (auto& it : object->GetComponents())
     {
         auto behaviour = dynamic_cast<Behaviour*>(it.get());
@@ -298,7 +296,7 @@ void Engine::fixedUpdate(GameObject* object)
 
 void Engine::checkStart(GameObject* object)
 {
-    // 自身のコンポーネントの中でFixedUpdateを呼び出していないものを呼ぶ
+    // 自身のコンポーネントの中でStartを呼び出していないものを呼ぶ
     for (auto& it : object->GetComponents())
     {
         auto behaviour = dynamic_cast<Behaviour*>(it.get());
@@ -318,7 +316,7 @@ void Engine::checkStart(GameObject* object)
 
 void Engine::update(GameObject* object)
 {
-    // 自身のコンポーネントの中でFixedUpdateを呼び出していないものを呼ぶ
+    // Updateを呼ぶ
     for (auto& it : object->GetComponents())
     {
         auto behaviour = dynamic_cast<Behaviour*>(it.get());

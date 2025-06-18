@@ -49,6 +49,7 @@ public:
     {
         first->gameObject = this;
         components.push_back(std::move(first));
+        AddComponent(std::forward<Rest>(rest)...);
     }
 
     template<typename T, typename... Args>
@@ -75,7 +76,7 @@ protected:
     std::wstring name_;
     std::vector<std::unique_ptr<Component>> components;
 
-    const std::wstring& getName() override { return name_; }
+    const std::wstring& getName() const override { return name_; }
 };
 
 } // namespace UniDx

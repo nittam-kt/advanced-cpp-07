@@ -11,4 +11,6 @@ public:
 
 protected:
     virtual void OnEnable();
+
+    ComPtr<ID3D11Buffer> vb; // 頂点バッファ
 };

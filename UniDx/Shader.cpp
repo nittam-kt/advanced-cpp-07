@@ -2,16 +2,46 @@
 
 #include <filesystem>
 #include <d3d11.h>
+#include <SimpleMath.h>
 
 #include "D3DManager.h"
 #include "Debug.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
+using namespace DirectX::SimpleMath;
+
 namespace UniDx
 {
+// 各頂点バッファのレイアウト
+const std::array< D3D11_INPUT_ELEMENT_DESC, 1> VertexP::layout =
+{
+	D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
+const std::array< D3D11_INPUT_ELEMENT_DESC, 2> VertexPN::layout =
+{
+	D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	D3D11_INPUT_ELEMENT_DESC{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
+const std::array< D3D11_INPUT_ELEMENT_DESC, 2> VertexPT::layout =
+{
+	D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	D3D11_INPUT_ELEMENT_DESC{ "TEXUV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
+const std::array< D3D11_INPUT_ELEMENT_DESC, 2> VertexPC::layout =
+{
+	D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	D3D11_INPUT_ELEMENT_DESC{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
+const std::array< D3D11_INPUT_ELEMENT_DESC, 3> VertexPNT::layout =
+{
+	D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	D3D11_INPUT_ELEMENT_DESC{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	D3D11_INPUT_ELEMENT_DESC{ "TEXUV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
 
-bool Shader::Compile(std::wstring filePath)
+
+bool Shader::Compile(std::wstring filePath, const D3D11_INPUT_ELEMENT_DESC* layout, size_t layout_size)
 {
 	// 頂点シェーダーを読み込み＆コンパイル
 	ComPtr<ID3DBlob> compiledVS;
@@ -42,13 +72,8 @@ bool Shader::Compile(std::wstring filePath)
 		return false;
 	}
 
-	// １頂点の詳細な情報
-	std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,		0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-
 	// 頂点インプットレイアウト作成
-	if (FAILED(D3DManager::instance->GetDevice()->CreateInputLayout(&layout[0], (UINT)layout.size(), compiledVS->GetBufferPointer(), compiledVS->GetBufferSize(), &m_inputLayout)))
+	if (FAILED(D3DManager::instance->GetDevice()->CreateInputLayout(layout, (UINT)layout_size, compiledVS->GetBufferPointer(), compiledVS->GetBufferSize(), &m_inputLayout)))
 	{
 		Debug::Log(L"頂点インプットレイアウトの作成エラー");
 		return false;

@@ -156,9 +156,6 @@
     <ClInclude Include="..\UniDx\UniDxTime.h">
       <Filter>UniDx</Filter>
     </ClInclude>
-    <ClInclude Include="..\UniDx\GameObject.h">
-      <Filter>UniDx</Filter>
-    </ClInclude>
     <ClInclude Include="..\UniDx\Object.h">
       <Filter>UniDx</Filter>
     </ClInclude>
@@ -195,11 +192,17 @@
     <ClInclude Include="source\TestRenderer.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="..\UniDx\Texture.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\Input.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UniDx\GameObject.h">
+      <Filter>UniDx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\UniDX\Engine.cpp">
-      <Filter>UniDx</Filter>
-    </ClCompile>
     <ClCompile Include="..\UniDx\Shader.cpp">
       <Filter>UniDx</Filter>
     </ClCompile>
@@ -227,6 +230,18 @@
     <ClCompile Include="..\UniDx\Renderer.cpp">
       <Filter>UniDx</Filter>
     </ClCompile>
+    <ClCompile Include="..\UniDx\Texture.cpp">
+      <Filter>UniDx</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TestCameraBehaviour.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UniDX\Engine.cpp">
+      <Filter>UniDx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UniDx\Input.cpp">
+      <Filter>UniDx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="week01.rc">
@@ -240,12 +255,18 @@
     <Image Include="week01.ico">
       <Filter>リソース ファイル</Filter>
     </Image>
+    <Image Include="Resource\floor.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\UniDx\SimplePositionShader.hlsl">
       <Filter>UniDx</Filter>
     </FxCompile>
     <FxCompile Include="..\UniDx\SpriteShader.hlsl">
+      <Filter>UniDx</Filter>
+    </FxCompile>
+    <FxCompile Include="..\UniDx\Albedo.hlsl">
       <Filter>UniDx</Filter>
     </FxCompile>
   </ItemGroup>
@@ -255,6 +276,9 @@
     </None>
     <None Include="..\DirectXTex\include\DirectXTex.inl">
       <Filter>DirectXTex\include</Filter>
+    </None>
+    <None Include="Resource\M PLUS 1.spritefont">
+      <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

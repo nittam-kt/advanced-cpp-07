@@ -3,8 +3,13 @@
 #include <vector>
 #include <memory>
 
+#include <SimpleMath.h>
+
 namespace UniDx
 {
+using DirectX::SimpleMath::Vector3;
+using DirectX::SimpleMath::Vector2;
+using DirectX::SimpleMath::Color;
 
 class Object;
 class GameObject;

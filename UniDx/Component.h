@@ -71,7 +71,7 @@ protected:
 
     Component();
 
-    const std::wstring& getName() override;
+    const std::wstring& getName() const override;
 };
 
 

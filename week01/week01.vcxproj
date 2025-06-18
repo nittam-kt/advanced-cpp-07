@@ -172,12 +172,14 @@
     <ClInclude Include="..\UniDx\Debug.h" />
     <ClInclude Include="..\UniDX\Engine.h" />
     <ClInclude Include="..\UniDx\GameObject.h" />
+    <ClInclude Include="..\UniDx\Input.h" />
     <ClInclude Include="..\UniDx\Object.h" />
     <ClInclude Include="..\UniDx\Property.h" />
     <ClInclude Include="..\UniDx\Renderer.h" />
     <ClInclude Include="..\UniDx\Scene.h" />
     <ClInclude Include="..\UniDx\SceneManager.h" />
     <ClInclude Include="..\UniDx\Shader.h" />
+    <ClInclude Include="..\UniDx\Texture.h" />
     <ClInclude Include="..\UniDx\Transform.h" />
     <ClInclude Include="..\UniDx\UniDxDefine.h" />
     <ClInclude Include="..\UniDx\UniDxTime.h" />
@@ -194,21 +196,29 @@
     <ClCompile Include="..\UniDx\Component.cpp" />
     <ClCompile Include="..\UniDx\D3DManager.cpp" />
     <ClCompile Include="..\UniDX\Engine.cpp" />
+    <ClCompile Include="..\UniDx\Input.cpp" />
     <ClCompile Include="..\UniDx\Renderer.cpp" />
     <ClCompile Include="..\UniDx\Shader.cpp" />
+    <ClCompile Include="..\UniDx\Texture.cpp" />
     <ClCompile Include="..\UniDx\Transform.cpp" />
     <ClCompile Include="source\CreateDefaultScene.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\TestCameraBehaviour.cpp" />
     <ClCompile Include="source\TestRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="week01.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resource\floor.png" />
     <Image Include="small.ico" />
     <Image Include="week01.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\UniDx\Albedo.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="..\UniDx\SimplePositionShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -221,6 +231,7 @@
   <ItemGroup>
     <None Include="..\DirectXTex\include\DirectXTex.inl" />
     <None Include="..\DirectXTK\include\SimpleMath.inl" />
+    <None Include="Resource\M PLUS 1.spritefont" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\DirectXTex\debug_lib\DirectXTex.lib" />
