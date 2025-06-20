@@ -189,9 +189,6 @@
     <ClInclude Include="..\UniDx\Renderer.h">
       <Filter>UniDx</Filter>
     </ClInclude>
-    <ClInclude Include="source\TestRenderer.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="..\UniDx\Texture.h">
       <Filter>UniDx</Filter>
     </ClInclude>
@@ -200,6 +197,12 @@
     </ClInclude>
     <ClInclude Include="..\UniDx\GameObject.h">
       <Filter>UniDx</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TestRenderer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TestCameraBehaviour.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

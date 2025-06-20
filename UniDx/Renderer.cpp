@@ -79,9 +79,7 @@ void Renderer::UpdatePositionCameraCBuffer(const UniDx::Camera& camera) const
     // ─ ワールド行列を位置に合わせて作成
     VSConstantBuffer0 cb{};
     cb.world = Matrix::CreateTranslation(transform->position);
-//    cb.view = Matrix::Identity;   // 今回は固定カメラ
     cb.view = camera.GetViewMatrix();
-//    cb.projection = Matrix::Identity;   // 必要なら透視／正射影を別途セット
     cb.projection = camera.GetProjectionMatrix(16.0f/9.0f);
 
     // 定数バッファ更新

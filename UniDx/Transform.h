@@ -25,8 +25,9 @@ public:
     Property<Quaternion> localRotation;
     Property<Vector3> localScale;
 
-    // グローバルposition
+    // ワールド空間のプロパティ
     Property<Vector3> position;
+    Property<Quaternion> rotation;
 
     Transform* parent = nullptr;
 
@@ -89,6 +90,31 @@ public:
                     _localPosition = Vector3::Transform(worldPos, invParent);
                 } else {
                     _localPosition = worldPos;
+                }
+                m_dirty = true;
+            }
+        ),
+        rotation(
+            [this]() {
+                UpdateMatrices();
+                // ワールド行列からクォータニオンを取得
+                Vector3 s, t;
+                Quaternion q;
+                m_worldMatrix.Decompose(s, q, t);
+                return q;
+            },
+            [this](const Quaternion& worldRot) {
+                if (parent) {
+                    parent->UpdateMatrices();
+                    // 親のワールド回転の逆を掛けてローカル回転を算出
+                    Quaternion parentWorldRot, parentWorldRotInv;
+                    Vector3 s, t;
+                    parent->m_worldMatrix.Decompose(s, parentWorldRot, t);
+                    parentWorldRot.Inverse(parentWorldRotInv);
+                    _localRotation = Quaternion::Concatenate(worldRot, parentWorldRotInv);
+                }
+                else {
+                    _localRotation = worldRot;
                 }
                 m_dirty = true;
             }

@@ -8,12 +8,19 @@ namespace UniDx{
 // static なメインカメラ
 Camera* Camera::main;
 
-Matrix Camera::GetViewMatrix() const {
-    auto t = gameObject->GetComponent<Transform>();
-    Vector3 pos = t->position;
-    Vector3 look = pos + Vector3(0, 0, 1);
-    Vector3 up = Vector3(0, 1, 0);
-    return XMMatrixLookAtLH(pos, look, up);
+Matrix Camera::GetViewMatrix() const
+{
+    // ワールド行列を分解
+    Vector3 scale, translation;
+    Quaternion rotation;
+    Matrix mtx = transform->GetWorldMatrix();
+    mtx.Decompose(scale, rotation, translation);
+
+    // スケールを(1,1,1)にして再構成
+    Matrix worldNoScale = Matrix::CreateFromQuaternion(rotation) * Matrix::CreateTranslation(translation);
+
+    // 逆行列を返す（ビュー行列）
+    return worldNoScale.Invert();
 }
 
 

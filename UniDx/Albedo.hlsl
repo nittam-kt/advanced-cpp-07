@@ -50,5 +50,4 @@ float4 PS(PSInput In) : SV_Target0
  
     // テクスチャの色を出力
     return texColor;
-    return float4(0.5, 0.8, 0, 1);
 }
