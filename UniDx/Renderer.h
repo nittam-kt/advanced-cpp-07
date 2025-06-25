@@ -23,18 +23,25 @@ public:
     Shader shader;
     ReadOnlyProperty<Texture*> mainTexture;
 
+    // コンストラクタ
     Material();
+    Material(VertexType vt, const std::wstring& shader);
 
-    template<typename TVertex>
-    void initialize(std::wstring shaderPath) { shader.Compile<TVertex>(shaderPath); }
+    // シェーダのコンパイル
+    // あらかじめ頂点タイプとシェーダパスを設定して使う
+    bool compileShader();
 
+    // マテリアル情報設定。Render()内で呼び出す
     void setForRender() const;
 
+    // テクスチャ追加
     void addTexture(std::unique_ptr<Texture> tex);
 
 protected:
     ComPtr<ID3D11Buffer> constantBuffer;
     std::vector<std::unique_ptr<Texture>> textures;
+    VertexType vertexType;
+    std::wstring shaderPath;
 
     virtual const std::wstring& getName() const override { return shader.name; }
 };

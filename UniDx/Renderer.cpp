@@ -27,10 +27,44 @@ struct VSConstantBuffer0
 Material::Material() :
     mainTexture(
         [this]() { return textures.size() > 0 ? textures.front().get() : nullptr; }
-    )
-
+    ),
+    vertexType(VertexTypeUnknown)
 {
+}
 
+Material::Material(VertexType vt, const std::wstring& shader) :
+    mainTexture(
+        [this]() { return textures.size() > 0 ? textures.front().get() : nullptr; }
+    ),
+    vertexType(vt),
+    shaderPath(shader)
+{
+}
+
+// -----------------------------------------------------------------------------
+// レンダリング用にデバイスへ設定
+// -----------------------------------------------------------------------------
+bool Material::compileShader()
+{
+    switch (vertexType)
+    {
+    case VertexTypeP:
+        return shader.compile<VertexP>(shaderPath);
+    case VertexTypePN:
+        return shader.compile<VertexPN>(shaderPath);
+    case VertexTypePT:
+        return shader.compile<VertexPT>(shaderPath);
+    case VertexTypePC:
+        return shader.compile<VertexPC>(shaderPath);
+    case VertexTypePNT:
+        return shader.compile<VertexPNT>(shaderPath);
+    case VertexTypePNC:
+        return shader.compile<VertexPNC>(shaderPath);
+    case VertexTypeUnknown:
+    default:
+        assert(false);
+        return false;
+    }
 }
 
 
@@ -39,7 +73,7 @@ Material::Material() :
 // -----------------------------------------------------------------------------
 void Material::setForRender() const
 {
-    shader.SetToContext();
+    shader.setToContext();
     for (auto& tex : textures)
     {
         tex->setForRender();

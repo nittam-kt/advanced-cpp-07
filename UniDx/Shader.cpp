@@ -39,9 +39,15 @@ const std::array< D3D11_INPUT_ELEMENT_DESC, 3> VertexPNT::layout =
 	D3D11_INPUT_ELEMENT_DESC{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	D3D11_INPUT_ELEMENT_DESC{ "TEXUV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 };
+const std::array< D3D11_INPUT_ELEMENT_DESC, 3> VertexPNC::layout =
+{
+	D3D11_INPUT_ELEMENT_DESC{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	D3D11_INPUT_ELEMENT_DESC{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	D3D11_INPUT_ELEMENT_DESC{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
 
 
-bool Shader::Compile(std::wstring filePath, const D3D11_INPUT_ELEMENT_DESC* layout, size_t layout_size)
+bool Shader::compile(std::wstring filePath, const D3D11_INPUT_ELEMENT_DESC* layout, size_t layout_size)
 {
 	// 頂点シェーダーを読み込み＆コンパイル
 	ComPtr<ID3DBlob> compiledVS;
@@ -85,7 +91,7 @@ bool Shader::Compile(std::wstring filePath, const D3D11_INPUT_ELEMENT_DESC* layo
 	return true;
 }
 
-void Shader::SetToContext() const
+void Shader::setToContext() const
 {
 	D3DManager::instance->GetContext()->VSSetShader(m_vertex.Get(), 0, 0);
 	D3DManager::instance->GetContext()->PSSetShader(m_pixel.Get(), 0, 0);

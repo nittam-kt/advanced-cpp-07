@@ -26,7 +26,7 @@ void TestRenderer::OnEnable()
     materials.push_back(std::make_unique<Material>());
 
     // マテリアルをシェーダーを読み込んで初期化
-    materials.back()->initialize<VertexPT>(L"../UniDx/Albedo.hlsl");
+    materials.back()->shader.compile<VertexPT>(L"../UniDx/Albedo.hlsl");
 
     // テクスチャを読み込んでマテリアルに追加
     std::unique_ptr<Texture> t = std::make_unique<Texture>();
